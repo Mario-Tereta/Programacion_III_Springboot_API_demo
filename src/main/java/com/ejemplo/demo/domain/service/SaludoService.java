@@ -23,6 +23,24 @@ public class SaludoService {
       3) Agregar prefijo "Estudiante".
     */
     String normalizarNombre(String nombre) {
-        return nombre == null ? "Mundo" : nombre.trim();
+    	if (nombre == null || nombre.trim().isEmpty()) {
+            return "Mundo";
+        }
+
+        nombre = nombre.trim();
+
+        // esto ayuda que numero o caracateres especiales sean rechazdos, ejemplo si coloco Tereta123
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            throw new IllegalArgumentException(
+                    "El nombre no debe contener numeros ni caracteres especiales"
+            );
+        }
+
+        // Esto a que los nombre inicien con Mayusculas y cambia el resto a minusculas. si coloco "tEREta" se convierte a "Tereta"
+        nombre = nombre.substring(0, 1).toUpperCase()
+                + nombre.substring(1).toLowerCase();
+
+        return "Estudiante " + nombre;
+        
     }
 }
