@@ -1,47 +1,60 @@
 package com.ejemplo.demo.api.exception;
 
-import com.ejemplo.demo.api.dto.ErrorResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.ejemplo.demo.api.dto.ErrorResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> manejarValidacion(MethodArgumentNotValidException ex) {
-        Map<String, String> detalles = new HashMap<>();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            detalles.put(error.getField(), error.getDefaultMessage());
-        }
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+    public org.springframework.http.ResponseEntity<ErrorResponse>
+    manejarErroresValidacion(MethodArgumentNotValidException ex) {
 
-        ErrorResponse body = new ErrorResponse(
+        Map<String, String> detalles = new HashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error ->
+                        detalles.put(
+                                error.getField(),
+                                error.getDefaultMessage()
+                        )
+                );
+
+        ErrorResponse response = new ErrorResponse(
                 "VALIDATION_ERROR",
                 "Uno o mas campos son invalidos",
                 Instant.now(),
                 detalles
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        return org.springframework.http.ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> manejarGenerica(Exception ex) {
-        ErrorResponse body = new ErrorResponse(
-                "INTERNAL_ERROR",
-                "Ocurrio un error interno",
-                Instant.now(),
-                Map.of()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
-    }
+	 @ExceptionHandler(Exception.class)
+	    public org.springframework.http.ResponseEntity<ErrorResponse>
+	    manejarErrorGeneral(Exception ex) {
+
+	        ErrorResponse response = new ErrorResponse(
+	                "INTERNAL_ERROR",
+	                "Ocurrio un error interno",
+	                Instant.now(),
+	                new HashMap<>()
+	        );
+
+	        return org.springframework.http.ResponseEntity
+	                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(response);
+	    }
 
     /*
     PASO 5 (EJERCICIO):
@@ -50,14 +63,20 @@ public class GlobalExceptionHandler {
     */
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> manejarReglaDeNegocio(IllegalArgumentException ex) {
-        ErrorResponse body = new ErrorResponse(
+    public org.springframework.http.ResponseEntity<ErrorResponse>
+    manejarErrorNegocio(IllegalArgumentException ex) {
+
+        ErrorResponse response = new ErrorResponse(
                 "BUSINESS_RULE_ERROR",
                 ex.getMessage(),
                 Instant.now(),
-                Map.of()
+                new HashMap<>()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+
+        return org.springframework.http.ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
     }
+
     
 }
