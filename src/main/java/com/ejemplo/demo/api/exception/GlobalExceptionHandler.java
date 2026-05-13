@@ -8,10 +8,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ejemplo.demo.api.dto.ErrorResponse;
+import com.ejemplo.demo.api.exception.RecursoNoEncontradoException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	
+	@ExceptionHandler(RecursoNoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse manejarNoEncontrado(
+            RecursoNoEncontradoException ex
+    ) {
+
+        return new ErrorResponse(
+                "NOT_FOUND",
+                ex.getMessage(),
+                Instant.now(),
+                Map.of()
+        );
+    }
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
     public org.springframework.http.ResponseEntity<ErrorResponse>
@@ -77,6 +94,8 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(response);
     }
-
     
+
+
+
 }

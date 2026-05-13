@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.ejemplo.demo.api.dto.CategoriaRequest;
 import com.ejemplo.demo.api.dto.CategoriaResponse;
@@ -41,5 +43,23 @@ public class CategoriaController {
     ) {
 
         return categoriaService.obtenerPorId(id);
+    }
+    
+    @PutMapping("/{id}")
+    public CategoriaResponse actualizar(
+            @PathVariable Long id,
+            @RequestBody CategoriaRequest request
+    ) {
+
+        return categoriaService.actualizar(id, request);
+    }
+    
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(
+            @PathVariable Long id
+    ) {
+
+        categoriaService.eliminar(id);
     }
 }

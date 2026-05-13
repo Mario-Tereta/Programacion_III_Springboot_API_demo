@@ -9,6 +9,7 @@ import com.ejemplo.demo.api.dto.CategoriaRequest;
 import com.ejemplo.demo.api.dto.CategoriaResponse;
 import com.ejemplo.demo.domain.model.Categoria;
 import com.ejemplo.demo.domain.repository.CategoriaRepository;
+import com.ejemplo.demo.api.exception.RecursoNoEncontradoException;
 
 @Service
 public class CategoriaService {
@@ -51,7 +52,7 @@ public class CategoriaService {
 
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Categoria no encontrada")
+                        new RecursoNoEncontradoException("Categoria no encontrada")
                 );
 
         return new CategoriaResponse(
@@ -59,5 +60,34 @@ public class CategoriaService {
                 categoria.getNombre(),
                 categoria.getDescripcion()
         );
+    }
+    
+    public CategoriaResponse actualizar(Long id, CategoriaRequest request) {
+
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecursoNoEncontradoException("Categoria no encontrada")
+                );
+
+        categoria.setNombre(request.nombre());
+        categoria.setDescripcion(request.descripcion());
+
+        Categoria actualizada = categoriaRepository.save(categoria);
+
+        return new CategoriaResponse(
+                actualizada.getId(),
+                actualizada.getNombre(),
+                actualizada.getDescripcion()
+        );
+    }
+    
+    public void eliminar(Long id) {
+
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecursoNoEncontradoException("Categoria no encontrada")
+                );
+
+        categoriaRepository.delete(categoria);
     }
 }

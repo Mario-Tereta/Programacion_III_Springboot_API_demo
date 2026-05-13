@@ -10,6 +10,8 @@ import com.ejemplo.demo.domain.model.Categoria;
 import com.ejemplo.demo.domain.model.Producto;
 import com.ejemplo.demo.domain.repository.CategoriaRepository;
 import com.ejemplo.demo.domain.repository.ProductoRepository;
+import com.ejemplo.demo.api.exception.RecursoNoEncontradoException;
+
 
 @Service
 public class ProductoService {
@@ -68,7 +70,7 @@ public class ProductoService {
 
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Producto no encontrado")
+                        new RecursoNoEncontradoException("Producto no encontrado")
                 );
 
         return new ProductoResponse(
@@ -78,5 +80,43 @@ public class ProductoService {
                 producto.getStock(),
                 producto.getCategoria().getNombre()
         );
+    }
+    
+    public ProductoResponse actualizar(Long id, ProductoRequest request) {
+
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecursoNoEncontradoException("Producto no encontrado")
+                );
+
+        Categoria categoria = categoriaRepository.findById(request.categoriaId())
+                .orElseThrow(() ->
+                        new RecursoNoEncontradoException("Categoria no encontrada")
+                );
+
+        producto.setNombre(request.nombre());
+        producto.setPrecio(request.precio());
+        producto.setStock(request.stock());
+        producto.setCategoria(categoria);
+
+        Producto actualizado = productoRepository.save(producto);
+
+        return new ProductoResponse(
+                actualizado.getId(),
+                actualizado.getNombre(),
+                actualizado.getPrecio(),
+                actualizado.getStock(),
+                actualizado.getCategoria().getNombre()
+        );
+    }
+    
+    public void eliminar(Long id) {
+
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Producto no encontrado")
+                );
+
+        productoRepository.delete(producto);
     }
 }
