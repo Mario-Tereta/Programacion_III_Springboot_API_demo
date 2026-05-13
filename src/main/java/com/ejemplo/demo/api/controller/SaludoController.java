@@ -11,12 +11,13 @@ import com.ejemplo.demo.api.dto.SaludoRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import com.ejemplo.demo.generated.api.DefaultApi;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
-public class SaludoController {
+public class SaludoController implements DefaultApi {
 
     @GetMapping
     public ResponseEntity<Map<String, String>> health() {

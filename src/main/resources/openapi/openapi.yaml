@@ -1,0 +1,76 @@
+openapi: 3.0.3
+
+info:
+  title: Spring Boot API Demo
+  version: 1.0.0
+  description: API REST para Programacion III
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+
+  /api/v1:
+    get:
+      summary: Endpoint principal
+      operationId: obtenerMensajePrincipal
+
+      responses:
+        '200':
+          description: Mensaje principal
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/v1/saludos:
+    get:
+      summary: Listar saludos
+      operationId: listarSaludos
+
+      responses:
+        '200':
+          description: Lista de saludos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+    post:
+      summary: Crear saludo
+      operationId: crearSaludo
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaludoRequest'
+
+      responses:
+        '200':
+          description: Saludo creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaludoResponse'
+
+components:
+
+  schemas:
+
+    SaludoRequest:
+      type: object
+
+      properties:
+        mensaje:
+          type: string
+
+    SaludoResponse:
+      type: object
+
+      properties:
+        respuesta:
+          type: string
