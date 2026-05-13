@@ -3,6 +3,7 @@ package com.ejemplo.demo.domain.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ejemplo.demo.api.dto.CategoriaRequest;
 import com.ejemplo.demo.api.dto.CategoriaResponse;
@@ -44,5 +45,19 @@ public class CategoriaService {
                         c.getDescripcion()
                 ))
                 .toList();
+    }
+    
+    public CategoriaResponse obtenerPorId(Long id) {
+
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Categoria no encontrada")
+                );
+
+        return new CategoriaResponse(
+                categoria.getId(),
+                categoria.getNombre(),
+                categoria.getDescripcion()
+        );
     }
 }

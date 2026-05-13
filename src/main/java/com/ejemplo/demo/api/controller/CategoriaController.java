@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ejemplo.demo.api.dto.CategoriaRequest;
 import com.ejemplo.demo.api.dto.CategoriaResponse;
 import com.ejemplo.demo.domain.service.CategoriaService;
+
 
 @RestController
 @RequestMapping("/api/v1/categorias")
@@ -31,5 +33,13 @@ public class CategoriaController {
     @GetMapping
     public List<CategoriaResponse> listar() {
         return categoriaService.listar();
+    }
+    
+    @GetMapping("/{id}")
+    public CategoriaResponse obtenerPorId(
+            @PathVariable Long id
+    ) {
+
+        return categoriaService.obtenerPorId(id);
     }
 }

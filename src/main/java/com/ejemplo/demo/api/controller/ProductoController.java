@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ejemplo.demo.api.dto.ProductoRequest;
 import com.ejemplo.demo.api.dto.ProductoResponse;
@@ -31,5 +32,13 @@ public class ProductoController {
     @GetMapping
     public List<ProductoResponse> listar() {
         return productoService.listar();
+    }
+    
+    @GetMapping("/{id}")
+    public ProductoResponse obtenerPorId(
+            @PathVariable Long id
+    ) {
+
+        return productoService.obtenerPorId(id);
     }
 }

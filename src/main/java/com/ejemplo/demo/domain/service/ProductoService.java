@@ -63,4 +63,20 @@ public class ProductoService {
                 ))
                 .toList();
     }
+    
+    public ProductoResponse obtenerPorId(Long id) {
+
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Producto no encontrado")
+                );
+
+        return new ProductoResponse(
+                producto.getId(),
+                producto.getNombre(),
+                producto.getPrecio(),
+                producto.getStock(),
+                producto.getCategoria().getNombre()
+        );
+    }
 }
