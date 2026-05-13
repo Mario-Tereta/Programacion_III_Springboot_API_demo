@@ -4,20 +4,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ejemplo.demo.api.dto.SaludoResponse;
 import com.ejemplo.demo.domain.service.SaludoService;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.ejemplo.demo.api.dto.SaludoRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.ejemplo.demo.generated.api.DefaultApi;
+import com.ejemplo.demo.generated.model.SaludoRequest;
+import com.ejemplo.demo.generated.model.SaludoResponse;
 
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
 public class SaludoController implements DefaultApi {
+	
+	@Override
+	public ResponseEntity<List<String>> listarSaludos() {
+
+	    return ResponseEntity.ok(
+	            List.of("Hola", "Bienvenido")
+	    );
+	}
+	
+	@Override
+	public ResponseEntity<SaludoResponse> crearSaludo(
+	        @Valid @RequestBody SaludoRequest request
+	) {
+
+	    SaludoResponse response = new SaludoResponse();
+
+	    response.setRespuesta(
+	            "Hola " + request.getMensaje()
+	    );
+
+	    return ResponseEntity.ok(response);
+	}
 
     @GetMapping
     public ResponseEntity<Map<String, String>> health() {
@@ -44,7 +67,8 @@ public class SaludoController implements DefaultApi {
     }
 
     //3) Descomenta este endpoint:
-
+    
+    /*
     @GetMapping("/saludos")
     public ResponseEntity<SaludoResponse> saludar(
             @RequestParam(defaultValue = "Mundo") String nombre
@@ -62,10 +86,10 @@ public class SaludoController implements DefaultApi {
        - 
 
     2) Descomenta este endpoint:
-     */
+     
     @PostMapping("/saludos")
     public ResponseEntity<SaludoResponse> saludarPost(@Valid @RequestBody SaludoRequest request) {
         return ResponseEntity.ok(saludoService.crearSaludo(request.nombre()));
     }
-    
+    */
 }
