@@ -94,6 +94,20 @@
                 <modelPackage>
                     com.ejemplo.demo.generated.model
                 </modelPackage>
+                
+                <generateModels>false</generateModels>
+
+    			<importMappings>
+
+        			<importMapping>
+            			SaludoRequest=com.ejemplo.demo.api.dto.SaludoRequest
+        			</importMapping>
+
+        			<importMapping>
+            			SaludoResponse=com.ejemplo.demo.api.dto.SaludoResponse
+        			</importMapping>
+
+    			</importMappings>
 
                 <configOptions>
 

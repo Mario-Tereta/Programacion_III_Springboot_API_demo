@@ -10,8 +10,10 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.ejemplo.demo.generated.api.DefaultApi;
-import com.ejemplo.demo.generated.model.SaludoRequest;
-import com.ejemplo.demo.generated.model.SaludoResponse;
+//import com.ejemplo.demo.generated.model.SaludoRequest;
+//import com.ejemplo.demo.generated.model.SaludoResponse;
+import com.ejemplo.demo.api.dto.SaludoRequest;
+import com.ejemplo.demo.api.dto.SaludoResponse;
 
 import java.util.Map;
 import java.util.List;
@@ -28,18 +30,15 @@ public class SaludoController implements DefaultApi {
 	    );
 	}
 	
+	
 	@Override
 	public ResponseEntity<SaludoResponse> crearSaludo(
 	        @Valid @RequestBody SaludoRequest request
 	) {
 
-	    SaludoResponse response = new SaludoResponse();
-
-	    response.setRespuesta(
-	            "Hola " + request.getMensaje()
+	    return ResponseEntity.ok(
+	            saludoService.crearSaludo(request.nombre())
 	    );
-
-	    return ResponseEntity.ok(response);
 	}
 
     @GetMapping
