@@ -20,7 +20,7 @@ tags:
 
 paths:
 
-  /api/v1:
+  /:
     get:
       tags:
         - workshop
@@ -36,7 +36,7 @@ paths:
               schema:
                 type: string
 
-  /api/v1/saludos:
+  /saludos:
     get:
       tags:
         - workshop
@@ -76,6 +76,91 @@ paths:
               schema:
                 $ref: '#/components/schemas/SaludoResponse'
 
+  /api/v1/simulaciones/prestamo:
+    post:
+      tags:
+        - simulaciones
+
+      summary: Simular prestamo
+      operationId: simularPrestamo
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrestamoRequest'
+
+      responses:
+        '200':
+          description: Resultado simulacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrestamoResponse'
+
+  /api/v1/demo/estado/singleton:
+    get:
+      tags:
+        - demo-estado
+
+      summary: Obtener contador singleton
+      operationId: obtenerEstadoSingleton
+
+      responses:
+        '200':
+          description: Valor contador singleton
+          content:
+            application/json:
+              schema:
+                type: integer
+
+    post:
+      tags:
+        - demo-estado
+
+      summary: Incrementar contador singleton
+      operationId: incrementarEstadoSingleton
+
+      responses:
+        '200':
+          description: Nuevo valor singleton
+          content:
+            application/json:
+              schema:
+                type: integer
+
+  /api/v1/demo/estado/manual:
+    get:
+      tags:
+        - demo-estado
+
+      summary: Obtener contador manual
+      operationId: obtenerEstadoManual
+
+      responses:
+        '200':
+          description: Valor contador manual
+          content:
+            application/json:
+              schema:
+                type: integer
+
+    post:
+      tags:
+        - demo-estado
+
+      summary: Incrementar contador manual
+      operationId: incrementarEstadoManual
+
+      responses:
+        '200':
+          description: Nuevo valor manual
+          content:
+            application/json:
+              schema:
+                type: integer
+
 components:
 
   schemas:
@@ -93,3 +178,34 @@ components:
       properties:
         respuesta:
           type: string
+
+    PrestamoRequest:
+      type: object
+
+      properties:
+        monto:
+          type: number
+          format: double
+
+        tasaAnual:
+          type: number
+          format: double
+
+        meses:
+          type: integer
+
+    PrestamoResponse:
+      type: object
+
+      properties:
+        cuotaMensual:
+          type: number
+          format: double
+
+        interesTotal:
+          type: number
+          format: double
+
+        totalPagar:
+          type: number
+          format: double

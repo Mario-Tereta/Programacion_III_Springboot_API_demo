@@ -106,7 +106,15 @@
         			<importMapping>
             			SaludoResponse=com.ejemplo.demo.api.dto.SaludoResponse
         			</importMapping>
-
+        			
+        			<importMapping>
+            			PrestamoRequest=com.ejemplo.demo.api.dto.PrestamoRequest
+                   	</importMapping>
+                   	
+                   	<importMapping>
+                   	    PrestamoResponse=com.ejemplo.demo.api.dto.PrestamoResponse               	               			
+                   	</importMapping>
+                                      
     			</importMappings>
 
                 <configOptions>

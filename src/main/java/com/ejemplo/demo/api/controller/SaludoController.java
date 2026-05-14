@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.ejemplo.demo.generated.api.DefaultApi;
+import com.ejemplo.demo.generated.api.WorkshopApi;
 //import com.ejemplo.demo.generated.model.SaludoRequest;
 //import com.ejemplo.demo.generated.model.SaludoResponse;
 import com.ejemplo.demo.api.dto.SaludoRequest;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
-public class SaludoController implements DefaultApi {
+public class SaludoController implements WorkshopApi {
 	
 	@Override
 	public ResponseEntity<List<String>> listarSaludos() {
